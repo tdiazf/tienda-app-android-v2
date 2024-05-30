@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_map);
@@ -65,8 +68,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         TextView userDetails = findViewById(R.id.textViewUserDetails);
 
+        // En MapActivity
+        email = getIntent().getStringExtra("email");
         userName = getIntent().getStringExtra("userName");
-        userEmail = getIntent().getStringExtra("userEmail");
+
+
         userDetails.setText("Hola " + userName + " (" + userEmail + ")");
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -75,15 +81,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_LOCATION_PERMISSION);
+                    REQUEST_LOCATION_PERMISSION);
         } else {
             checkLocationSettings();
         }
 
-        email = getIntent().getStringExtra("email");
 
+        buttonDeleteUser = findViewById(R.id.buttonDeleteUser);
+
+
+        // Recupera el correo electrónico y el nombre de usuario de las SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        String retrievedEmail = sharedPreferences.getString("email", "");
+        String userName = sharedPreferences.getString("userName", "");
+
+        // Imprime el correo electrónico y el nombre de usuario para depuración
+        Log.d("MapActivity", "Retrieved user email: " + retrievedEmail);
+        Log.d("MapActivity", "Retrieved user name: " + userName);
+
+        userDetails.setText("Hola " + userName + " (" + retrievedEmail + ")");
         buttonDeleteUser = findViewById(R.id.buttonDeleteUser);
         buttonDeleteUser.setOnClickListener(view -> deleteUser());
     }
@@ -187,6 +205,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void deleteUser() {
         try {
             DbContactos dbContactos = new DbContactos(MapActivity.this);
+            Log.d("MapActivity", "Deleting user with email: " + email); // Agrega esta línea
             boolean isDeleted = dbContactos.deleteUser(email);
 
             if (isDeleted) {
@@ -198,6 +217,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         } catch (Exception e) {
             Toast.makeText(MapActivity.this, "ERROR: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("DbContactos", "Error deleting user", e);
         }
     }
 }

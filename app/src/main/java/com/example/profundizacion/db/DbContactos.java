@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,36 +22,34 @@ public class DbContactos extends DbHelper {
     }
 
     public long insertarUsuario(String name, String telefono, String mail, String password) {
-        long id = 0;
+    long id = 0;
 
-        try {
-            SQLiteDatabase db = null;
-            DbHelper dbHelper = new DbHelper(context);
-            db = dbHelper.getWritableDatabase();
+    try {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            // Verificar si el correo electrónico ya existe
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CONTACTOS + " WHERE mail=?", new String[]{mail});
-            if (cursor.moveToFirst()) {
-                // Si el correo electrónico ya existe, mostrar un mensaje de error y no insertar un nuevo usuario
-                Toast.makeText(context, "USUARIO YA EXISTENTE.", Toast.LENGTH_LONG).show();
-                id = -1;
-            } else {
-                // Si el correo electrónico no existe, insertar un nuevo usuario
-                ContentValues values = new ContentValues();
-                values.put("name", name);
-                values.put("telefono", telefono);
-                values.put("mail", mail);
-                values.put("password", password);
+        // Verificar si el correo electrónico ya existe
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CONTACTOS + " WHERE mail=?", new String[]{mail});
+        if (cursor.moveToFirst()) {
+            // Si el correo electrónico ya existe, mostrar un mensaje de error y no insertar un nuevo usuario
+            Toast.makeText(context, "USUARIO YA EXISTENTE.", Toast.LENGTH_LONG).show();
+            id = -1;
+        } else {
+            // Si el correo electrónico no existe, insertar un nuevo usuario
+            ContentValues values = new ContentValues();
+            values.put("name", name);
+            values.put("telefono", telefono);
+            values.put("mail", mail);
+            values.put("password", password);
 
-                id = db.insert(TABLE_CONTACTOS, null, values);
-            }
-            cursor.close();
-        } catch (Exception ex) {
-            ex.toString();
+            id = db.insert(TABLE_CONTACTOS, null, values);
         }
-
-        return id;
+        cursor.close();
+    } catch (Exception ex) {
+        ex.toString();
     }
+
+    return id;
+}
 
     public boolean validateUser(String username, String password) {
         boolean isValid = false;
@@ -76,7 +75,9 @@ public class DbContactos extends DbHelper {
 
     public boolean deleteUser(String email) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_CONTACTOS, "mail = ?", new String[]{email}) > 0;
+        int affectedRows = db.delete(TABLE_CONTACTOS, "mail = ?", new String[]{email});
+        Log.d("DbContactos", "Filas afectadas: " + affectedRows);
+        return affectedRows > 0;
     }
 
     public boolean updateUser(String name, String telefono, String mail) {

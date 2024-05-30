@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -18,13 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Profundizacion"
         tools:targetApi="31">
-
-        <!-- Activities -->
+        <activity
+            android:name=".ProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" /> <!-- Activities -->
         <activity
             android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,9 +40,7 @@
             android:exported="true" />
         <activity
             android:name=".MapActivity"
-            android:exported="false" />
-
-        <!-- API Key -->
+            android:exported="false" /> <!-- API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCAJ_qKL-Fuuc_fGUx93anh2FBFtbjqrQU" />

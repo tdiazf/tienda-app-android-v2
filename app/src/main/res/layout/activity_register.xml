@@ -6,24 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    >
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="15dp"
-        >
-
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/imageView19"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="128dp"
+            android:layout_height="103dp"
             android:src="@drawable/btn_4blanco" />
 
         <EditText
+            android:id="@+id/name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -33,11 +32,10 @@
             android:textSize="20sp"
             android:background="@drawable/rounded_corner"
             android:padding="18dp"
-            android:inputType="text"
-            android:id="@+id/name_input"
-            />
+            android:inputType="text" />
 
         <EditText
+            android:id="@+id/telefono_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -47,10 +45,10 @@
             android:textSize="20sp"
             android:background="@drawable/rounded_corner"
             android:padding="18dp"
-            android:inputType="text"
-            android:id="@+id/telefono_input" />
+            android:inputType="text" />
 
         <EditText
+            android:id="@+id/mail_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -60,10 +58,10 @@
             android:textSize="20sp"
             android:background="@drawable/rounded_corner"
             android:padding="18dp"
-            android:inputType="text"
-            android:id="@+id/mail_input" />
+            android:inputType="text" />
 
         <EditText
+            android:id="@+id/password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -73,10 +71,10 @@
             android:textSize="20sp"
             android:background="@drawable/rounded_corner"
             android:padding="18dp"
-            android:inputType="text"
-            android:id="@+id/password_input" />
+            android:inputType="text" />
 
         <Button
+            android:id="@+id/register_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Register"
@@ -85,9 +83,7 @@
             android:padding="18dp"
             android:layout_marginTop="32dp"
             android:textSize="20sp"
-            android:id="@+id/register_btn"
-            android:clickable="true"
-            />
+            android:clickable="true" />
 
         <TextView
             android:layout_width="wrap_content"
